@@ -2,11 +2,12 @@
 Movie Streaming Platform
 
 
-#Overview
+# Overview
+
 CineFlicks is a user-friendly movie streaming platform where users can browse and enjoy a wide range of movies hassle-free. Here's everything you need to know to get started:
 
 
-Getting Started
+# Getting Started
 Follow these instructions to set up and run the CineFlicks application on your local machine.
 
 
@@ -47,7 +48,7 @@ bash
 npm start
 Access the application in your browser at http://localhost:3000.
 
-#Features
+# Features
 
 
 .User Authentication: Create an account, log in, and reset your password if forgotten.
@@ -63,7 +64,7 @@ Access the application in your browser at http://localhost:3000.
 Contributing
 We welcome contributions from the community. If you want to contribute to CineFlicks, please follow our Contribution Guidelines.
 
-License
+# License
 This project is licensed under the MIT License.
 
 Acknowledgements
