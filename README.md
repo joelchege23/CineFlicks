@@ -3,8 +3,10 @@ Movie Streaming Platform
 
 CineFlicks is a user-friendly movie streaming platform where users can browse and enjoy a wide range of movies hassle-free. Here's everything you need to know to get started:
 
+
 Getting Started
 Follow these instructions to set up and run the CineFlicks application on your local machine.
+
 
 Prerequisites
 Make sure you have the following software installed on your system:
@@ -29,6 +31,7 @@ npm install
 Configuration
 Create a .env file in the project root and add the following environment variables:
 
+
 env
 PORT=3000
 MONGODB_URI=mongodb://localhost:27017/cineflicks
@@ -43,6 +46,8 @@ npm start
 Access the application in your browser at http://localhost:3000.
 
 Features
+
+
 .User Authentication: Create an account, log in, and reset your password if forgotten.
 
 .Movie Catalog: Browse, search, and view detailed information about movies.
