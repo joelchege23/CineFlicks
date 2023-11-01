@@ -12,7 +12,7 @@ class Config:
 class DevConfig(Config):
     DEBUG=config("DEBUG", cast=bool)
     SQLALCHEMY_ECHO=True
-    SQLALCHEMY_DATABASE_URI='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+    SQLALCHEMY_DATABASE_URI='sqlite:///' + os.path.join(BASE_DIR, 'cineflicks.db')
 
 class ProductionConfig(Config):
     DEBUG=config("DEBUG", cast=bool)

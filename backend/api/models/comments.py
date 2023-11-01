@@ -9,6 +9,8 @@ class Comment(db.Model):
     date_created = db.Column(db.DateTime(), default=datetime.datetime.utcnow)
 
     # a user is related to a comment
-    user_id= db.Column(db.Integer(), db.ForeignKey('user.user_id'))
+    # user_id= db.Column(db.Integer(), db.ForeignKey('user.user_id'))
 
-    movie_id= db.Column(db.Integer(), db.ForeignKey('movie.movie_id'))
+    # movie_id= db.Column(db.Integer(), db.ForeignKey('movie.movie_id'))
+
+    # movie = db.relationship('Movie', back_populates='comments')
