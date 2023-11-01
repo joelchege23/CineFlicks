@@ -6,6 +6,8 @@ import Movies from './components/Movies';
 import MovieDetails from './components/MovieDetails';
 import Reviews from './components/Reviews';
 import ReviewDetails from './components/ReviewDetails';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
 
 function App() {
   return (
@@ -28,6 +30,9 @@ function App() {
           </Route>
           <Route path="/reviews/:id">
             <ReviewDetails />
+          </Route>
+          <Route path="/signup">
+            <SignUp />
           </Route>
         </Switch>
       </div>
