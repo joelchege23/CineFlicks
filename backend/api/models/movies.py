@@ -21,3 +21,7 @@ class Movie(db.Model):
     # # Establish a one-to-many relationship with comments
     # comments = db.relationship('Comment', back_populates='movie')
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
