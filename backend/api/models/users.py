@@ -18,7 +18,7 @@ class User(db.Model):
     user_messages = db.relationship('Messages', backref='user', lazy='dynamic')
     
     #define relationship between user and friends
-    user_friends = db.relationship('Friends', backref='user', lazy='dynamic')
+    user_friends = db.relationship('Hub', backref='user', lazy='dynamic')
 
     def __repr__(self):
         return f'<User {self.username}| email: {self.email}>'

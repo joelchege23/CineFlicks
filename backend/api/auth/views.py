@@ -1,5 +1,6 @@
+
 from flask import request
-from flask_restx import Namespace, Resource, fields
+from flask_restx import Namespace, Resource, fields, marshal
 from werkzeug.security import generate_password_hash, check_password_hash
 from  ..models.users import User
 from http import HTTPStatus
@@ -15,7 +16,7 @@ signUp_model = auth_namespace.model(
     'SignUp', {
         'username': fields.String(description="Username", required=True),
         'email': fields.String(description="Email", required=True),
-        'password': fields.String(description="Password", required=True),
+        'password_hash': fields.String(description="Password", required=True),
     }
 )
 
@@ -35,23 +36,29 @@ login_model = auth_namespace.model(
 )
 @auth_namespace.route("/signUp")
 class UserAuth(Resource):
+  
+  
     @auth_namespace.expect(signUp_model)
-    @auth_namespace.marshal_with(user_model)
+    # @auth_namespace.marshal_with(user_model)
     def post(self):
         """create new user"""
         data = request.get_json()
         username = data.get("username")
         email = data.get("email")
-        password = data.get("password")
+        password = data.get("password_hash")
+        print(username, password, email)
 
+        
         if User.query.filter_by(username=username).first():
             return {
                 "error": "User already exists"
             }, HTTPStatus.BAD_REQUEST
 
-        user = User(username=username, email=email, password=generate_password_hash(password))
-        user.save()
-        return user, HTTPStatus.OK
+        else:
+            user = User(username=username, email=email, password_hash=generate_password_hash(password))
+            user.save()
+            print(user)
+            return marshal(user, user_model,  skip_none=True), HTTPStatus.OK
     
 @auth_namespace.route("/users")
 class GetUsers(Resource):
@@ -94,7 +101,7 @@ class Login(Resource):
         data = request.get_json()
         user = User.query.filter_by(username=data.get("username")).first()
 
-        if user is not None and check_password_hash(user.password, data.get("password")):
+        if user is not None and check_password_hash(user.password_hash, data.get("password")):
             access_token = create_access_token(identity=user.username)
             refresh_token = create_refresh_token(identity=user.username)
 

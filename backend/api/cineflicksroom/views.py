@@ -4,7 +4,7 @@ from flask_restx import fields, Namespace, Resource
 from ..models.chatroom import ChatRoom
 from ..util import db
 from http import HTTPStatus
-chatroom_namespace= Namespace("chatroom","endpoints for chatroom")
+chatroom_namespace= Namespace(" cinflicks chatroom","endpoints for cineflicks chatroom")
 
 # api blueprint
 chatroom_model = chatroom_namespace.model('ChatRoom', {

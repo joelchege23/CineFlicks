@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from ..models.chatroom import ChatRoom
-from ..models.friends import Friends
 from ..models.users import User
 from ..models.messages import Messages
 from ..util import db

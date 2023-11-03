@@ -1,7 +1,7 @@
 from flask import Flask
 from .auth.views import  auth_namespace
-from .friends.views import friends_namespace
-from .chatroom.views import chatroom_namespace
+from .hub.views import hub_namespace
+from .cineflicksroom.views import chatroom_namespace
 from .messages.views import messages_namespace
 # from .movies.views import movie_namespace
 from flask_restx import Api
@@ -9,7 +9,7 @@ from .config.config import config_dict
 from .util import db
 
 from .models.messages import Messages
-from .models.friends import Friends
+from .models.hub import Hub
 from .models.chatroom import ChatRoom
 from .models.users import User
 from flask_jwt_extended import JWTManager
@@ -35,7 +35,7 @@ def create_app():
     # add our api blueprints
 
     api.add_namespace(auth_namespace)
-    api.add_namespace(friends_namespace)
+    api.add_namespace(hub_namespace)
     api.add_namespace(chatroom_namespace)
     api.add_namespace(messages_namespace)
 
@@ -47,6 +47,6 @@ def create_app():
             'User':User,
             'Messages':Messages,
             'ChatRoom':ChatRoom,
-            'Friends':Friends
+            'hub':Hub
         }
     return app
