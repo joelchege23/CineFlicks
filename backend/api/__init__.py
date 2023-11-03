@@ -13,11 +13,14 @@ from .models.friends import Friends
 from .models.chatroom import ChatRoom
 from .models.users import User
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 from flask_migrate import Migrate
 def create_app():
     app=Flask(__name__)
     app.config.from_object(config_dict['dev'])
+    CORS(app)
+
     
     
     # initialize database
