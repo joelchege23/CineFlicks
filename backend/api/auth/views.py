@@ -11,106 +11,109 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 
 auth_namespace=Namespace("auth", "handle user authentication")
-
-signUp_model=auth_namespace.model(
-    'User',{
-        'user_id':fields.Integer(description="user id"),
-        'username':fields.String(description="user name" ,required=True),
-        'email':fields.String(description="user email" , required=True),
-        'password':fields.String(description="user password" ,required=True),
+signUp_model = auth_namespace.model(
+    'SignUp', {
+        'username': fields.String(description="Username", required=True),
+        'email': fields.String(description="Email", required=True),
+        'password': fields.String(description="Password", required=True),
     }
 )
 
-user_model=auth_namespace.model(
-    'User',{
-        'user_id':fields.Integer(description="user id" ,),
-        'username':fields.String(description="user name" ,),
-        'email':fields.String(description="user email" ,),
-        'created_at':fields.DateTime(description="date when user was created")
+user_model = auth_namespace.model(
+    'User', {
+        'username': fields.String(description="Username"),
+        'email': fields.String(description="Email"),
+        'created_at': fields.DateTime(description="Date when user was created")
     }
 )
 
-login_model=auth_namespace.model(
-    'User',{
-        "username":fields.String(description="user name" , required=True),
-        "password":fields.String(description="user password" ,required=True)
+login_model = auth_namespace.model(
+    'Login', {
+        "username": fields.String(description="Username", required=True),
+        "password": fields.String(description="Password", required=True)
     }
 )
-
 @auth_namespace.route("/signUp")
 class UserAuth(Resource):
-    
     @auth_namespace.expect(signUp_model)
     @auth_namespace.marshal_with(user_model)
     def post(self):
-        """
-        signup user
-        
-        """
-
-        # get data from json
-        data=request.get_json()
-
-        username=data.get("username")
-        email=data.get("email")
-        password=data.get("password")
-        print(username, email, password)
-
-       
+        data = request.get_json()
+        username = data.get("username")
+        email = data.get("email")
+        password = data.get("password")
 
         if User.query.filter_by(username=username).first():
             return {
-                "error": "user exixts"
-            }, 400
-       
-        user=User(username=username, email=email, password=generate_password_hash(password))
+                "error": "User already exists"
+            }, HTTPStatus.BAD_REQUEST
+
+        user = User(username=username, email=email, password=generate_password_hash(password))
         user.save()
-        return user, 200
+        return user, HTTPStatus.OK
     
 
+    @auth_namespace.marshal_with(user_model, as_list=True)
+    @jwt_required()
+    def get(self):
+        """List all registered users"""
+        
+        users = User.query.all()
+        return users, HTTPStatus.OK
+
+  
+@auth_namespace.route('/<int:id>')
+class User_by_id(Resource):
+    @auth_namespace.marshal_with(user_model)
+    @jwt_required()
+    def get(self, id):
+        """retrieve user by id"""
+        user = User.query.get(id)
+        if not user:
+            return {'message': 'User not found'}, HTTPStatus.NOT_FOUND
+        return user, HTTPStatus.OK
+
+    @auth_namespace.marshal_with(user_model)
+    @jwt_required()
+    def delete(self, id):
+        """delete user by id"""
+        user = User.query.get(id)
+        if not user:
+            return {'message': 'User not found'}, HTTPStatus.NOT_FOUND
+        user.delete()
+        return {'message': 'User deleted'}, HTTPStatus.OK
 
 
 @auth_namespace.route("/login")
 class Login(Resource):
     @auth_namespace.expect(login_model)
     def post(self):
-
-        """
-            generate JWT to login user
-        """
-
-        data=request.get_json()
-        print(data)
-        user= User.query.filter_by(username=data.get("username")).first()
-        print(user.username)
-        print(check_password_hash(user.password, data.get("password")))
+        data = request.get_json()
+        user = User.query.filter_by(username=data.get("username")).first()
 
         if user is not None and check_password_hash(user.password, data.get("password")):
-            print("True")
-            access_token=create_access_token(identity=user.username)
-            refresh_token=create_refresh_token(identity=user.username)
+            access_token = create_access_token(identity=user.username)
+            refresh_token = create_refresh_token(identity=user.username)
 
-            response={
-                "access_token":access_token,
-                "refresh_token":refresh_token
+            response = {
+                "access_token": access_token,
+                "refresh_token": refresh_token
             }
 
             return response, HTTPStatus.OK
-        
-        return {"error":"user does not exist"}, HTTPStatus.NOT_FOUND
-    
 
+        return {"error": "User does not exist or invalid credentials"}, HTTPStatus.NOT_FOUND
 
 
 @auth_namespace.route("/refresh")
 class RefreshToken(Resource):
     @jwt_required(refresh=True)
     def post(self):
-        username=get_jwt_identity()
+        username = get_jwt_identity()
 
         if username:
+            access_token = create_access_token(identity=username)
 
-            access_token=create_access_token(identity=username)
+            return {'access_token': access_token}, HTTPStatus.OK
 
-            return {'access_token':access_token}, HTTPStatus.OK
-        return {"error": "token invalid or not passed"}, HTTPStatus.BAD_REQUEST
+        return {"error": "Token invalid or not passed"}, HTTPStatus.BAD_REQUEST

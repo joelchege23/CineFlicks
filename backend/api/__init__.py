@@ -1,14 +1,13 @@
 from flask import Flask
 from .auth.views import  auth_namespace
-from .movies.views import movie_namespace
+# from .movies.views import movie_namespace
 from flask_restx import Api
 from .config.config import config_dict
 from .util import db
 
-from .models.movies import Movie
-from .models.comments import Comment
-from .models.user_movie_rating import UserMovieRating
-from .models.usergenrepreference import UserGenrePreference
+from .models.messages import Messages
+from .models.friends import Friends
+from .models.chatroom import ChatRoom
 from .models.users import User
 from flask_jwt_extended import JWTManager
 
@@ -30,15 +29,15 @@ def create_app():
     # add our api blueprints
 
     api.add_namespace(auth_namespace)
-    api.add_namespace(movie_namespace)
+    # api.add_namespace(movie_namespace)
 
     @app.shell_context_processor
     def make_shell_context():
         return {
             'db':db,
             'User':User,
-            'Movie':Movie,
-            'UserMovieRating':UserMovieRating,
-            'UserGenrePreference':UserGenrePreference
+            'Messages':Messages,
+            'ChatRoom':ChatRoom,
+            'Friends':Friends
         }
     return app
