@@ -73,7 +73,7 @@ class User_by_id(Resource):
             return {'message': 'User not found'}, HTTPStatus.NOT_FOUND
         return user, HTTPStatus.OK
 
-    @auth_namespace.marshal_with(user_model)
+ 
     @jwt_required()
     def delete(self, id):
         """delete user by id"""
