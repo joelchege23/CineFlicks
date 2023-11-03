@@ -1,21 +1,22 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Home from './components/Home';
-import Movies from './components/Movies';
-import MovieDetails from './components/MovieDetails';
-import Reviews from './components/Reviews';
-import ReviewDetails from './components/ReviewDetails';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, } from 'react-router-dom';
+import Navbar from './Navbar';
+import Home from './Home';
+import Movies from './Movies';
+import MovieDetails from './MovieDetails';
+import Reviews from './Reviews';
+import ReviewDetails from './ReviewDetails';
+import SignUp from './SignUp'; 
+
 
 
 function App() {
   return (
-    <Router>
+
       <div>
         <Navbar />
 
-        <Switch>
+        <Router>
           <Route exact path="/">
             <Home />
           </Route>
@@ -34,9 +35,9 @@ function App() {
           <Route path="/signup">
             <SignUp />
           </Route>
-        </Switch>
+        </Router>
       </div>
-    </Router>
+
   );
 }
 
