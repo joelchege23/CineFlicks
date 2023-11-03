@@ -1,5 +1,5 @@
+from flask import request
 from flask_restx import Namespace, Resource, fields
-from flask import jsonify, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from  ..models.users import User
 from http import HTTPStatus
@@ -8,7 +8,7 @@ from http import HTTPStatus
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
-from flask_jwt_extended import JWTManager
+
 
 auth_namespace=Namespace("auth", "handle user authentication")
 signUp_model = auth_namespace.model(
@@ -38,6 +38,7 @@ class UserAuth(Resource):
     @auth_namespace.expect(signUp_model)
     @auth_namespace.marshal_with(user_model)
     def post(self):
+        """create new user"""
         data = request.get_json()
         username = data.get("username")
         email = data.get("email")
@@ -52,7 +53,8 @@ class UserAuth(Resource):
         user.save()
         return user, HTTPStatus.OK
     
-
+@auth_namespace.route("/users")
+class GetUsers(Resource):
     @auth_namespace.marshal_with(user_model, as_list=True)
     @jwt_required()
     def get(self):
@@ -62,7 +64,7 @@ class UserAuth(Resource):
         return users, HTTPStatus.OK
 
   
-@auth_namespace.route('/<int:id>')
+@auth_namespace.route('/user/<int:id>')
 class User_by_id(Resource):
     @auth_namespace.marshal_with(user_model)
     @jwt_required()
@@ -88,6 +90,7 @@ class User_by_id(Resource):
 class Login(Resource):
     @auth_namespace.expect(login_model)
     def post(self):
+        """generate token based on authenticated user"""
         data = request.get_json()
         user = User.query.filter_by(username=data.get("username")).first()
 

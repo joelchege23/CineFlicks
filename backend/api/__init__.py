@@ -1,5 +1,7 @@
 from flask import Flask
 from .auth.views import  auth_namespace
+from .friends.views import friends_namespace
+from .chatroom.views import chatroom_namespace
 # from .movies.views import movie_namespace
 from flask_restx import Api
 from .config.config import config_dict
@@ -29,7 +31,9 @@ def create_app():
     # add our api blueprints
 
     api.add_namespace(auth_namespace)
-    # api.add_namespace(movie_namespace)
+    api.add_namespace(friends_namespace)
+    api.add_namespace(chatroom_namespace)
+
 
     @app.shell_context_processor
     def make_shell_context():
