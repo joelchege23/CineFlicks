@@ -22,6 +22,7 @@ signUp_model = auth_namespace.model(
 
 user_model = auth_namespace.model(
     'User', {
+        'id':fields.Integer(description="Id"),
         'username': fields.String(description="Username"),
         'email': fields.String(description="Email"),
         'created_at': fields.DateTime(description="Date when user was created")
@@ -73,14 +74,13 @@ class GetUsers(Resource):
   
 @auth_namespace.route('/user/<int:id>')
 class User_by_id(Resource):
-    @auth_namespace.marshal_with(user_model)
     @jwt_required()
     def get(self, id):
         """retrieve user by id"""
         user = User.query.get(id)
         if not user:
             return {'message': 'User not found'}, HTTPStatus.NOT_FOUND
-        return user, HTTPStatus.OK
+        return marshal(user, user_model, skip_none=True), HTTPStatus.OK
 
  
     @jwt_required()

@@ -1,4 +1,6 @@
 import datetime
+
+from .hub import Hub
 from ..util import db
 
 
@@ -18,7 +20,8 @@ class User(db.Model):
     user_messages = db.relationship('Messages', backref='user', lazy='dynamic')
     
     #define relationship between user and friends
-    user_friends = db.relationship('Hub', backref='user', lazy='dynamic')
+    hubfriends = db.relationship('Hub', foreign_keys=[Hub.user_id], backref='user')
+
 
     def __repr__(self):
         return f'<User {self.username}| email: {self.email}>'

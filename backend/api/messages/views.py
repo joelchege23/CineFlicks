@@ -1,6 +1,6 @@
 from flask import request
 from flask_jwt_extended import jwt_required
-from flask_restx import Resource,  Namespace, fields
+from flask_restx import Resource,  Namespace, fields, marshal
 from http import HTTPStatus
 
 from ..models.messages import Messages
@@ -24,21 +24,23 @@ class MessagesResource(Resource):
     def get(self):
         """Get all messages"""
         messages = Messages.query.all()
-        return messages, HTTPStatus.OK
+        return marshal(messages, message_model, skip_none=True), HTTPStatus.OK
 
     @messages_namespace.expect(message_model)
-    @messages_namespace.marshal_with(message_model, code=201)
     @jwt_required()
     def post(self):
         """Create a message"""
         data = request.get_json()
-        new_message = Messages(
-            message_content=data.get('message_content'),
-            chatroom_id=data.get('chatroom_id'),
-            user_id=data.get('user_id')
-        )
-        new_message.save()
-        return new_message, HTTPStatus.CREATED
+        try:
+            new_message = Messages(
+                message_content=data.get('message_content'),
+                chatroom_id=data.get('chatroom_id'),
+                user_id=data.get('user_id')
+            )
+            new_message.save()
+            return marshal(new_message, message_model, skip_none=True), HTTPStatus.CREATED
+        except:
+            return {"error": "error posting data"}, HTTPStatus.BAD_REQUEST
 
 @messages_namespace.route('/messages/<int:id>')
 class MessageByIdResource(Resource):
@@ -48,7 +50,7 @@ class MessageByIdResource(Resource):
         """Get a message by its ID"""
         message = Messages.query.get(id)
         if message:
-            return message, HTTPStatus.OK
+             return marshal(message, message_model, skip_none=True), HTTPStatus.OK
         return {"message": "Message not found"}, HTTPStatus.NOT_FOUND
 
     @jwt_required()
