@@ -1,0 +1,10 @@
+
+
+#images-log {
+  display: flex;
+  justify-content: flex-start; /* Align items to the left */
+}
+
+#login-sighup {
+  margin-left: 20px; /* Adjust the margin as needed */
+}
