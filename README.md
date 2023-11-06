@@ -30,8 +30,15 @@ The backend of Cineflicks is well-documented with Swagger UI, allowing developer
 
 ## Getting Started
 
-To set up and run the Cineflicks chat app, follow the instructions in the [Prerequisites](#prerequisites) and [Backend Setup](#backend-setup) sections of the README.
+To set up and run the Cineflicks chat app, follow the instructions below.
+# React + Vite
 
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 ## Contributing
 
 Cineflicks is an open-source project, and we welcome contributions from the community. If you'd like to contribute to the project's development, please follow the guidelines mentioned in the [Contributing](#contributing) section of the README.
