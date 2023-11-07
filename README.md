@@ -1,4 +1,4 @@
- #Cineflicks - Chat App
+# Cineflicks - Chat App
 
 Cineflicks is a modern and engaging chat application that empowers users to connect, communicate, and share their favorite movies and TV series with friends and family. With a user-friendly interface, Cineflicks brings people closer by providing a seamless chat experience enhanced with the ability to recommend, discuss, and discover the latest entertainment options.
 
